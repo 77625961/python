@@ -16,13 +16,12 @@ I think I should read more code to find the answer
 import redis
 
 def store_redis(filepath):
-    r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0)
-    f = open(filepath, 'rb')
-    i = 0
-    for line in f.readlines():
-        code = line.strip()
-        r.set(i, code)
-        i += 1
+
+    with open(filepath, 'r') as f:
+		r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0)
+		for line in f.readlines():
+			r.rpush('res', line.strip())
+		print(r.lrange('res', '0', '-1'))
 
 
 
